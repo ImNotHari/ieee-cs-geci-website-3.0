@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Header from "@/components/Header";
-import { getSession, submitEventRequest, uploadEventFile } from "@/lib/supabase";
-import "../events.css";
+import { getSession } from "@/services/authService";
+import { submitEventRequest, uploadEventFile } from "@/services/eventService";
+import "@/styles/events.css";
 
 const TAG_OPTIONS = ["workshop", "hackathon", "talk", "seminar", "competition", "webinar"];
 

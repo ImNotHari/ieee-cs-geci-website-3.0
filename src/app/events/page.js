@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
-import { fetchPublishedEvents } from "@/lib/supabase";
-import "./events.css";
+import { fetchPublishedEvents } from "@/services/eventService";
+import { formatDateParts } from "@/utils/dateUtils";
+import "@/styles/events.css";
 
 function ClockIcon() {
   return (
@@ -46,12 +47,7 @@ function ExternalLinkIcon() {
 
 const ALL_TAGS = ["All", "Hackathon", "Workshop", "Talk", "Seminar", "Competition", "Webinar"];
 
-function formatDate(dateStr) {
-  const d = new Date(dateStr);
-  const day = d.getDate().toString().padStart(2, "0");
-  const month = d.toLocaleString("en", { month: "short" }).toUpperCase();
-  return { day, month };
-}
+
 
 export default function EventsPage() {
   const [events, setEvents] = useState([]);
@@ -140,7 +136,7 @@ export default function EventsPage() {
           <div className="events-empty">No events found for this category.</div>
         ) : (
           filtered.map((event, i) => {
-            const { day, month } = formatDate(event.event_date);
+            const { day, month } = formatDateParts(event.event_date);
             return (
               <div key={event.id} className="event-card">
                 {event.cover_image_url && (

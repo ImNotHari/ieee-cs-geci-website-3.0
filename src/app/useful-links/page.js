@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Header from "@/components/Header";
-import "./useful-links.css";
+import "@/styles/useful-links.css";
 
 export const metadata = {
   title: "Useful Links – IEEE CS SBC GECI",

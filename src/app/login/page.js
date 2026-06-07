@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { signIn } from "@/lib/supabase";
-import "./login.css";
+import { signIn } from "@/services/authService";
+import "@/styles/login.css";
 
 export default function LoginPage() {
   const router = useRouter();

@@ -2,12 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { fetchPublishedEvents } from "@/lib/supabase";
+import { fetchPublishedEvents } from "@/services/eventService";
+import { formatDate } from "@/utils/dateUtils";
 
-function formatDate(dateStr) {
-  const d = new Date(dateStr);
-  return d.toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" });
-}
+
 
 export default function FeaturedEvents() {
   const sectionRef = useRef(null);

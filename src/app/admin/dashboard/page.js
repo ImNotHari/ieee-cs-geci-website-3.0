@@ -3,7 +3,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { fetchMembers, deleteMember, getCurrentMember, signOut } from "@/lib/supabase";
+import { getCurrentMember, signOut } from "@/services/authService";
+import { fetchMembers, deleteMember } from "@/services/memberService";
 import MemberModal from "@/components/admin/MemberModal";
 
 // ── Icons ──────────────────────────────────────────────────

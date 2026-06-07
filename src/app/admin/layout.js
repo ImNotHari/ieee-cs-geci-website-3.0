@@ -1,4 +1,4 @@
-import "./admin.css";
+import "@/styles/admin.css";
 
 export const metadata = {
   title: "Admin Dashboard – IEEE CS SBC GECI",

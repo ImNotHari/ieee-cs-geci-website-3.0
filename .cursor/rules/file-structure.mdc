@@ -1,0 +1,252 @@
+---
+description: File Structure Design and Guidelines
+globs: *
+---
+# 📁 File Structure Design — Skill Guide
+
+## 🎯 Overview
+
+A properly arranged file structure is essential for building scalable, maintainable, and collaborative software systems. It defines how code, assets, and logic are organized, directly impacting development speed, debugging efficiency, and long-term project health.
+
+---
+
+## 🧠 Core Principles
+
+### 1. Clarity & Readability
+
+* Folder and file names must clearly describe their purpose.
+* A developer should understand the structure without documentation.
+
+**Good Example:**
+
+```
+/components
+/services
+/utils
+```
+
+**Bad Example:**
+
+```
+/stuff
+/misc
+/files
+```
+
+---
+
+### 2. Separation of Concerns
+
+Each file/module should handle a single responsibility.
+
+**Example:**
+
+* UI → `components/`
+* Logic → `services/`
+* Data → `models/`
+
+Avoid mixing responsibilities in one file.
+
+---
+
+### 3. Scalability
+
+The structure should support growth without becoming messy.
+
+**Non-scalable:**
+
+```
+/components
+  Header.js
+  Login.js
+  Dashboard.js
+```
+
+**Scalable (Feature-Based):**
+
+```
+/features
+  /auth
+    Login.jsx
+  /dashboard
+    Dashboard.jsx
+```
+
+---
+
+### 4. Consistency
+
+* Use consistent naming conventions across the project.
+
+| Type       | Format               | Example         |
+| ---------- | -------------------- | --------------- |
+| Components | PascalCase           | `LoginForm.jsx` |
+| Functions  | camelCase            | `fetchData.js`  |
+| Folders    | lowercase/kebab-case | `user-profile/` |
+
+---
+
+### 5. Modularity & Reusability
+
+* Break code into reusable pieces.
+* Avoid duplication.
+
+**Example:**
+
+```
+/components
+  Button.jsx
+  Card.jsx
+```
+
+---
+
+### 6. Low Coupling
+
+* Files should not heavily depend on each other.
+* Avoid circular dependencies.
+
+---
+
+### 7. Shallow Structure
+
+* Avoid deep nesting.
+* Ideal depth: **3–4 levels max**
+
+**Bad:**
+
+```
+src/a/b/c/d/e/file.js
+```
+
+**Good:**
+
+```
+src/features/auth/Login.jsx
+```
+
+---
+
+## 🏗️ Recommended Frontend Structure (React)
+
+```
+/src
+  /assets        # images, icons, fonts
+  /components    # reusable UI components
+  /features      # feature modules
+    /auth
+    /events
+    /blog
+  /pages         # main pages
+  /services      # API calls
+  /hooks         # custom hooks
+  /utils         # helper functions
+  /styles        # global styles
+  /config        # app config
+  App.jsx
+  main.jsx
+```
+
+---
+
+## ⚙️ Backend Structure (Node/Express)
+
+```
+/backend
+  /controllers   # request handlers
+  /routes        # API routes
+  /models        # database schemas
+  /services      # business logic
+  /middlewares   # auth, validation
+  /utils         # helpers
+  /config        # DB & env config
+  server.js
+```
+
+---
+
+## 📦 Naming Rules
+
+* Keep file names descriptive
+* Avoid abbreviations unless common
+* Use consistent casing
+
+---
+
+## 📏 File Size Guidelines
+
+* Ideal: **< 300–500 lines per file**
+* Split large files into smaller modules
+
+---
+
+## 🔒 Security Practices
+
+* Store secrets in `.env`
+* Never commit sensitive data
+* Use `.gitignore`
+* Separate public/private logic
+
+---
+
+## 🧪 Testing Structure
+
+```
+/tests
+  /unit
+  /integration
+```
+
+* Keep tests close to features or in a dedicated folder
+
+---
+
+## ⚡ Performance Considerations
+
+* Lazy load heavy components
+* Optimize assets
+* Avoid unnecessary imports
+
+---
+
+## 🧩 Structure Approaches
+
+### Type-Based (Beginner)
+
+```
+/components
+/services
+/utils
+```
+
+### Feature-Based (Recommended)
+
+```
+/features
+  /auth
+  /dashboard
+```
+
+---
+
+## ✅ Checklist
+
+A good file structure should:
+
+* Be easy to understand
+* Scale with project growth
+* Separate responsibilities clearly
+* Maintain naming consistency
+* Avoid deep nesting
+* Promote reusability
+* Support collaboration
+* Improve debugging
+* Secure sensitive data
+
+---
+
+## 💡 Key Insight
+
+> A clean file structure reflects clean thinking.
+
+Good architecture is not just organization — it’s how you design systems for the future.

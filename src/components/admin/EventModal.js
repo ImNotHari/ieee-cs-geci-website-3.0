@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { updateEvent, uploadEventFile } from "@/lib/supabase";
+import { updateEvent, uploadEventFile } from "@/services/eventService";
 
 const TAG_OPTIONS = ["workshop", "hackathon", "talk", "seminar", "competition", "webinar"];
 const STATUS_OPTIONS = ["pending", "published", "rejected"];

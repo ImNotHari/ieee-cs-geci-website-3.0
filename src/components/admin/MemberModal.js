@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { addMember, updateMember } from "@/lib/supabase";
+import { addMember, updateMember } from "@/services/memberService";
 
 const ROLES = ["member", "execom", "admin"];
 const YEARS = ["1st Year", "2nd Year", "3rd Year", "4th Year", "Alumni"];
