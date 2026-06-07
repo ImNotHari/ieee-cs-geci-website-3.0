@@ -17,6 +17,7 @@
   /* Palette */
   --bg-primary: #0a0a0a;
   --bg-nav: #0f1114;
+  --bg-card: rgba(15, 22, 36, 0.65);
   --text-white: #ffffff;
   --text-gray: #8a8d93;
   --text-muted: #5a5d63;
@@ -26,14 +27,46 @@
   --dot-inactive: #3a3d43;
   --dot-active: var(--accent-blue);
 
+  /* Semantic Colors */
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-danger: #ef4444;
+  --color-info: var(--accent-blue);
+
   /* Typography */
   --font-display: 'Bebas Neue', 'Oswald', sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Spacing Scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
 
   /* Sizing */
   --header-height: 80px;
   --nav-bar-height: 105px;
   --footer-height: 30px;
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+
+  /* Border Radius Scale */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-full: 9999px;
 }
 
 html {
@@ -571,10 +604,13 @@ a {
 
 /* ---------- Stats Section ---------- */
 .stats-section {
-  padding: 80px 50px;
+  padding: 0 50px 80px;
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.8s ease, transform 0.8s ease;
+  position: relative;
+  z-index: 10;
+  margin-top: -80px;
 }
 
 .stats-section.visible {
@@ -588,6 +624,13 @@ a {
   gap: 24px;
   max-width: 1100px;
   margin: 0 auto;
+  background: rgba(15, 22, 36, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(110, 142, 168, 0.2);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
 }
 
 .stat-card {
@@ -596,12 +639,11 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
-  border: 1px solid var(--border-color);
+  padding: 20px 10px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.015);
+  background: transparent;
   overflow: hidden;
-  transition: border-color 0.4s ease, transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .stats-section.visible .stat-card {
@@ -609,7 +651,6 @@ a {
 }
 
 .stat-card:hover {
-  border-color: rgba(110, 142, 168, 0.3);
   transform: translateY(-4px);
 }
 

@@ -11,7 +11,15 @@ export async function signIn(email, password) {
         error: null 
       };
     }
-    return { user: null, member: null, error: { message: 'Invalid demo credentials. Use admin@admin.com / admin' } };
+    if (email === 'member@member.com' && password === 'member') {
+      document.cookie = "demo_member=true; path=/";
+      return { 
+        user: { id: 'demo-member-id', email }, 
+        member: { id: 'demo-member-id', role: 'member', full_name: 'Demo Member', department: 'Computer Science', year: '3rd Year' }, 
+        error: null 
+      };
+    }
+    return { user: null, member: null, error: { message: 'Invalid demo credentials. Use admin@admin.com / admin OR member@member.com / member' } };
   }
 
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
@@ -30,6 +38,7 @@ export async function signIn(email, password) {
 export async function signOut() {
   if (!supabase) {
     document.cookie = "demo_admin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "demo_member=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     return { error: null };
   }
   const { error } = await supabase.auth.signOut();
@@ -39,8 +48,11 @@ export async function signOut() {
 /** Get the current authenticated session */
 export async function getSession() {
   if (!supabase) {
-    const isDemo = typeof document !== 'undefined' && document.cookie.includes('demo_admin=true');
-    return isDemo ? { user: { id: 'demo-user-id', email: 'admin@admin.com' } } : null;
+    const isAdmin = typeof document !== 'undefined' && document.cookie.includes('demo_admin=true');
+    const isMember = typeof document !== 'undefined' && document.cookie.includes('demo_member=true');
+    if (isAdmin) return { user: { id: 'demo-user-id', email: 'admin@admin.com' } };
+    if (isMember) return { user: { id: 'demo-member-id', email: 'member@member.com' } };
+    return null;
   }
   const { data } = await supabase.auth.getSession();
   return data.session;
@@ -52,7 +64,9 @@ export async function getCurrentMember() {
   if (!session) return null;
 
   if (!supabase) {
-    return { id: 'demo-user-id', role: 'admin', full_name: 'Demo Admin', email: 'admin@admin.com' };
+    const isAdmin = typeof document !== 'undefined' && document.cookie.includes('demo_admin=true');
+    if (isAdmin) return { id: 'demo-user-id', role: 'admin', full_name: 'Demo Admin', email: 'admin@admin.com', department: 'IT', year: '4th Year' };
+    return { id: 'demo-member-id', role: 'member', full_name: 'Demo Member', email: 'member@member.com', department: 'Computer Science', year: '3rd Year' };
   }
 
   const { data } = await supabase

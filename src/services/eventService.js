@@ -145,3 +145,17 @@ export async function uploadEventFile(file, folder = 'images') {
     .getPublicUrl(fileName);
   return { url: urlData.publicUrl, key: fileName, error: null };
 }
+
+/** Fetch all events created by a specific member */
+export async function fetchMemberEvents(memberId) {
+  if (!supabase) {
+    const myEvents = demoEvents.filter(e => e.created_by === memberId);
+    return { data: myEvents, error: null };
+  }
+  const { data, error } = await supabase
+    .from('events')
+    .select('*')
+    .eq('created_by', memberId)
+    .order('created_at', { ascending: false });
+  return { data, error };
+}

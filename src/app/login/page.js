@@ -30,6 +30,8 @@ export default function LoginPage() {
     // Role-based redirect
     if (member?.role === "admin") {
       router.push("/admin/dashboard");
+    } else if (member?.role === "member" || member?.role === "execom") {
+      router.push("/member/dashboard");
     } else {
       router.push("/");
     }
