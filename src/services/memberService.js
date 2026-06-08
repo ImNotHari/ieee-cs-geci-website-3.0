@@ -8,9 +8,11 @@ const demoMembers = [
 
 /** Fetch all members (admin only) */
 export async function fetchMembers() {
-  if (!supabase) {
+  const isDev = process.env.NODE_ENV === 'development';
+  if (!supabase && isDev) {
     return { data: [...demoMembers], error: null };
   }
+  if (!supabase) return { data: null, error: new Error('Database not configured') };
   const { data, error } = await supabase
     .from('members')
     .select('*')
@@ -32,7 +34,8 @@ export async function addMember(memberData) {
     }
     
     // In mock mode, update the local array so it persists in memory
-    if (!supabase) {
+    const isDev = process.env.NODE_ENV === 'development';
+    if (!supabase && isDev && data.memberData) {
       demoMembers.unshift(data.memberData);
     }
     

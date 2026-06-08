@@ -2,7 +2,8 @@ import { supabase } from './supabaseClient';
 
 /** Sign in with email + password. Returns { user, member, error } */
 export async function signIn(email, password) {
-  if (!supabase) {
+  const isDev = process.env.NODE_ENV === 'development';
+  if (!supabase && isDev) {
     if (email === 'admin@admin.com' && password === 'admin') {
       document.cookie = "demo_admin=true; path=/";
       return { 
@@ -22,6 +23,10 @@ export async function signIn(email, password) {
     return { user: null, member: null, error: { message: 'Invalid demo credentials. Use admin@admin.com / admin OR member@member.com / member' } };
   }
 
+  if (!supabase) {
+    return { user: null, member: null, error: { message: 'Authentication is not configured.' } };
+  }
+
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) return { user: null, member: null, error };
 
@@ -36,24 +41,28 @@ export async function signIn(email, password) {
 
 /** Sign out the current user */
 export async function signOut() {
-  if (!supabase) {
+  const isDev = process.env.NODE_ENV === 'development';
+  if (!supabase && isDev) {
     document.cookie = "demo_admin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie = "demo_member=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     return { error: null };
   }
+  if (!supabase) return { error: null };
   const { error } = await supabase.auth.signOut();
   return { error };
 }
 
 /** Get the current authenticated session */
 export async function getSession() {
-  if (!supabase) {
+  const isDev = process.env.NODE_ENV === 'development';
+  if (!supabase && isDev) {
     const isAdmin = typeof document !== 'undefined' && document.cookie.includes('demo_admin=true');
     const isMember = typeof document !== 'undefined' && document.cookie.includes('demo_member=true');
     if (isAdmin) return { user: { id: 'demo-user-id', email: 'admin@admin.com' } };
     if (isMember) return { user: { id: 'demo-member-id', email: 'member@member.com' } };
     return null;
   }
+  if (!supabase) return null;
   const { data } = await supabase.auth.getSession();
   return data.session;
 }
@@ -63,11 +72,14 @@ export async function getCurrentMember() {
   const session = await getSession();
   if (!session) return null;
 
-  if (!supabase) {
+  const isDev = process.env.NODE_ENV === 'development';
+  if (!supabase && isDev) {
     const isAdmin = typeof document !== 'undefined' && document.cookie.includes('demo_admin=true');
     if (isAdmin) return { id: 'demo-user-id', role: 'admin', full_name: 'Demo Admin', email: 'admin@admin.com', department: 'IT', year: '4th Year' };
     return { id: 'demo-member-id', role: 'member', full_name: 'Demo Member', email: 'member@member.com', department: 'Computer Science', year: '3rd Year' };
   }
+
+  if (!supabase) return null;
 
   const { data } = await supabase
     .from('members')

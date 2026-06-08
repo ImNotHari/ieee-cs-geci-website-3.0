@@ -13,14 +13,19 @@ export async function POST(req) {
     const password = Math.random().toString(36).slice(2, 12);
 
     // MOCK MODE FALLBACK
+    const isDev = process.env.NODE_ENV === 'development';
     if (!supabaseUrl || !serviceRoleKey || supabaseUrl === "your-supabase-url") {
-      // Return a simulated success response with a fake ID
-      const fakeId = "usr-" + Math.random().toString(36).slice(2, 8);
-      return NextResponse.json({
-        user: { id: fakeId, email },
-        memberData: { id: fakeId, full_name, email, ieee_member_id, role, department, year, phone },
-        password,
-      });
+      if (isDev) {
+        // Return a simulated success response with a fake ID
+        const fakeId = "usr-" + Math.random().toString(36).slice(2, 8);
+        return NextResponse.json({
+          user: { id: fakeId, email },
+          memberData: { id: fakeId, full_name, email, ieee_member_id, role, department, year, phone },
+          password,
+        });
+      } else {
+        return NextResponse.json({ error: "Authentication service is not fully configured" }, { status: 500 });
+      }
     }
 
     // REAL MODE
