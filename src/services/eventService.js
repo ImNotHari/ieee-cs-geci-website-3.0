@@ -98,7 +98,9 @@ export async function fetchAdminEvents(statusFilter) {
 
 export async function submitEventRequest(eventData) {
   if (!supabase) {
-    return { data: { ...eventData, id: 'evt-' + Math.random().toString(36).slice(2, 8), status: 'pending', created_at: new Date().toISOString() }, error: null };
+    const newEvent = { ...eventData, id: 'evt-' + Math.random().toString(36).slice(2, 8), status: 'pending', created_at: new Date().toISOString() };
+    demoEvents.push(newEvent);
+    return { data: newEvent, error: null };
   }
   const { data, error } = await supabase
     .from('events')
@@ -110,7 +112,12 @@ export async function submitEventRequest(eventData) {
 
 export async function updateEvent(id, updates) {
   if (!supabase) {
-    return { data: { id, ...updates }, error: null };
+    const index = demoEvents.findIndex(e => e.id === id);
+    if (index !== -1) {
+      demoEvents[index] = { ...demoEvents[index], ...updates };
+      return { data: demoEvents[index], error: null };
+    }
+    return { data: null, error: new Error('Event not found') };
   }
   const { data, error } = await supabase
     .from('events')
@@ -122,7 +129,11 @@ export async function updateEvent(id, updates) {
 }
 
 export async function deleteEvent(id) {
-  if (!supabase) return { error: null };
+  if (!supabase) {
+    const index = demoEvents.findIndex(e => e.id === id);
+    if (index !== -1) demoEvents.splice(index, 1);
+    return { error: null };
+  }
   const { error } = await supabase
     .from('events')
     .delete()
