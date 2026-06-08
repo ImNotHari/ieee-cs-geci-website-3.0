@@ -21,6 +21,8 @@ export default function MemberModal({ member, onClose, onSaved }) {
   const [form, setForm] = useState(isEditing ? { ...member } : { ...EMPTY_FORM });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [generatedPassword, setGeneratedPassword] = useState(null);
+  const [newMemberData, setNewMemberData] = useState(null);
 
   const set = (field) => (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
@@ -44,20 +46,53 @@ export default function MemberModal({ member, onClose, onSaved }) {
       return;
     }
 
-    onSaved(result.data);
+    if (!isEditing && result.data && result.data.password) {
+      // Show password screen
+      setGeneratedPassword(result.data.password);
+      setNewMemberData(result.data.memberData);
+    } else {
+      onSaved(result.data);
+    }
+  };
+
+  const handleCopyPassword = () => {
+    navigator.clipboard.writeText(generatedPassword);
+    alert("Password copied to clipboard!");
+  };
+
+  const handleFinalClose = () => {
+    onSaved(newMemberData);
   };
 
   return (
     <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
-        <h2 className="modal-title" id="modal-heading">
-          {isEditing ? "EDIT MEMBER" : "ADD MEMBER"}
-        </h2>
+        {generatedPassword ? (
+          <div className="modal-success-state" style={{ textAlign: "center", padding: "20px 0" }}>
+            <h2 className="modal-title" style={{ color: "var(--success)" }}>USER CREATED!</h2>
+            <p style={{ color: "var(--text-muted)", marginBottom: "20px" }}>
+              Please copy this randomly generated password. The user will need it to log in.
+            </p>
+            <div style={{ background: "rgba(255,255,255,0.05)", padding: "16px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.1)", marginBottom: "24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <code style={{ fontSize: "1.2rem", color: "white", letterSpacing: "2px" }}>{generatedPassword}</code>
+              <button type="button" className="btn btn-primary" onClick={handleCopyPassword} style={{ padding: "8px 16px" }}>
+                Copy
+              </button>
+            </div>
+            <button type="button" className="btn btn-primary" onClick={handleFinalClose} style={{ width: "100%" }}>
+              Done
+            </button>
+          </div>
+        ) : (
+          <>
+            <h2 className="modal-title" id="modal-heading">
+              {isEditing ? "EDIT MEMBER" : "ADD MEMBER"}
+            </h2>
 
-        {error && <div className="modal-error">{error}</div>}
+            {error && <div className="modal-error">{error}</div>}
 
-        <form className="modal-form" onSubmit={handleSubmit}>
-          <div className="modal-row">
+            <form className="modal-form" onSubmit={handleSubmit}>
+              <div className="modal-row">
             <div>
               <label className="modal-label" htmlFor="m-fullname">Full Name</label>
               <input
@@ -145,6 +180,8 @@ export default function MemberModal({ member, onClose, onSaved }) {
             </button>
           </div>
         </form>
+        </>
+        )}
       </div>
     </div>
   );
