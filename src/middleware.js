@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@insforge/sdk';
 
 /**
  * Role-based route protection middleware.
@@ -43,7 +43,9 @@ export async function middleware(request) {
   }
 
   // ── Production: Supabase Auth ─────────────────────────────
-  const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  const supabase = createClient({
+    baseUrl: supabaseUrl,
+    anonKey: supabaseAnonKey,
     global: {
       headers: {
         cookie: request.headers.get('cookie') ?? '',

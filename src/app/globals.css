@@ -102,7 +102,8 @@ a {
   justify-content: space-between;
   padding: 0 36px;
   z-index: 100;
-  background: transparent;
+  background: var(--bg-nav);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .header-logo {
@@ -273,7 +274,7 @@ a {
   align-items: center;
   justify-content: flex-start;
   position: relative;
-  padding: var(--header-height) 50px 0 50px;
+  padding: calc(var(--header-height) + 80px) 50px 0 50px;
   min-height: 0;
   overflow: hidden;
 }
@@ -531,11 +532,6 @@ a {
   animation-delay: 1.2s;
 }
 
-/* ---------- Hero Section Height Fix ---------- */
-.hero {
-  min-height: 100vh;
-}
-
 /* ---------- Shared Section Utilities ---------- */
 .section-tag {
   display: inline-block;
@@ -554,7 +550,7 @@ a {
 
 /* ---------- About Section ---------- */
 .about-section {
-  padding: 100px 50px 80px;
+  padding: 40px 50px 80px;
   position: relative;
   opacity: 0;
   transform: translateY(40px);
@@ -580,7 +576,11 @@ a {
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   line-height: 1.15;
   letter-spacing: 1px;
-  color: var(--text-white);
+  background: linear-gradient(90deg, var(--text-white), var(--accent-blue-light), var(--accent-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
   margin-bottom: 24px;
 }
 

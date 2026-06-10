@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createAdminClient } from "@insforge/sdk";
 
 export async function POST(req) {
   try {
@@ -29,11 +29,9 @@ export async function POST(req) {
     }
 
     // REAL MODE
-    const adminAuthClient = createClient(supabaseUrl, serviceRoleKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
+    const adminAuthClient = createAdminClient({
+      baseUrl: supabaseUrl,
+      apiKey: serviceRoleKey,
     });
 
     // 1. Create Auth User
